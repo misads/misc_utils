@@ -1,4 +1,4 @@
-# torch_template
+# misc_utils
 
 <p>
     <a href='https://torch-template.readthedocs.io/en/latest/?badge=latest'>
@@ -8,7 +8,7 @@
     </a>
 </p>
 
-A python package for commonly used pytorch models, data loaders and utils. 
+Misc system & data process utils for Python. 
 
 
 ### Installation
@@ -16,7 +16,7 @@ A python package for commonly used pytorch models, data loaders and utils.
 **For pip**  
 
 ```bash
-pip install torch-template
+pip install misc-utils
 ```
 
 **For source**
@@ -24,8 +24,8 @@ pip install torch-template
 Clone the repo, cd into it and run `pip install .` command.
 
 ```bash
-git clone https://github.com/misads/torch_template.git
-cd torch_template
+git clone https://github.com/misads/misc_utils.git
+cd misc_utils
 pip install .
 ```
 
@@ -37,36 +37,17 @@ conda activate <env>
 python setup.py install
 ```
 
-A configure file `torch_template.egg-info` will be generated in the repo directory. Copy `torch_template` and `torch_template.egg-info` to your `site-packages` folder.
+A configure file `misc_utils.egg-info` will be generated in the repo directory. Copy `misc_utils` and `misc_utils.egg-info` to your `site-packages` folder.
 
 
 ### Usage
 
 ```python
-import torch_template as tt
-from torch_template import misc_utils as utils
-from torch_template import torch_utils
+import misc_utils as utils
+utils.color_print('Yellow Text', 3)
 ```
 
 ### Documentation
 
-The documentation webpage can be found here <https://torch-template.readthedocs.io/en/latest/>.
-
-### File structure
-
-```yaml
-File structure
-    .
-    ├── network
-    │     ├── base_model.py     :Define models, losses and parameter updating
-    │     ├── norm.py           :Normalizations
-    │     └── weights_init.py   :weights init
-    │
-    ├── dataloader/             :Define Dataloaders
-    ├── model_zoo               :Commonly used models
-    └── utils
-          ├── misc_utils.py     :System utils
-          └── torch_utils.py    :PyTorch utils
-
-```
+The documentation webpage can be found here <https://misc-utils.readthedocs.io/en/latest/utils.html>.
 
