@@ -8,7 +8,7 @@
     </a>
 </p>
 
-Misc system io, time, string utils & decorators for Python. 
+Misc system I/O, time, string utils & decorators for Python. 
 
 
 ### Installation
