@@ -33,7 +33,7 @@ def get_timer(logger=None) -> Callable:
 
             seconds = (end_time - start_time).total_seconds()
 
-            args_str = to_string(args, last_comma=True) if len(args) else to_string(args)
+            args_str = to_string(args, last_comma=True) if len(args) and len(kwargs) else to_string(args)
 
             info = 'Call %s(%s%s), time: %s.' % (fn.__name__, args_str, to_string(kwargs), format_time(int(seconds)))
             if logger is not None:
