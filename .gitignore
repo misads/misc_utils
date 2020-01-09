@@ -134,3 +134,4 @@ dmypy.json
 attempt.py
 .idea/
 log.txt
+cache/

@@ -1,10 +1,11 @@
 # misc_utils
 
 <p>
-<a href='https://misc-utils.readthedocs.io/en/latest/?badge=latest'>
+    <a href="https://travis-ci.org/misc_utils/misc_utils"><img src='https://travis-ci.com/misads/misc_utils.svg?branch=master' alt='Travis Build Status'></a>
+    <a href="https://codecov.io/gh/misads/misc_utils">
+    <img src="https://codecov.io/gh/misads/misc_utils/branch/master/graph/badge.svg" /></a>
+    <a href='https://misc-utils.readthedocs.io/en/latest/?badge=latest'>
     <img src='https://readthedocs.org/projects/misc-utils/badge/?version=latest' alt='Documentation Status' /></a>
-    <a href="https://badge.fury.io/py/utils-misc">
-        <img src="https://badge.fury.io/py/utils-misc.svg" alt="Package version"></a>
     <a href="https://opensource.org/licenses/MIT">
         <img src="https://img.shields.io/badge/License-MIT-brightgreen.svg" alt="License">
     </a>

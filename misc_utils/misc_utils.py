@@ -111,8 +111,10 @@ def print_args(args):
         >>> print_args(args)
 
     """
+    print('===========Options===========')
     for k, obj in args._get_kwargs():
-        print('\033[1;32m', k, "\033[0m=\033[1;33m", obj, '\033[0m')
+        print(' \033[1;32m', str(k).lstrip(), "\033[0m=\033[1;33m", obj, '\033[0m')
+    print('=============================')
 
 
 def get_logger(f='log.txt', mode='w', level='info', print_stream=True):
