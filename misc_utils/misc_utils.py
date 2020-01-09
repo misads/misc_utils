@@ -21,22 +21,57 @@ import logging
 #    System utils
 #############################
 
+def to_string(obj, last_comma=False):
+    """Convert to string in one line.
 
-def p(v):
+    Args:
+        obj(list, tuple or dict): a list, tuple or dict to convert.
+        last_comma(bool): add a comma at last.
+
+    Returns:
+        (str) string.
+
+    Example:
+        >>> to_string([1, 2, 3, 4], last_comma=True)
+        >>> # 1, 2, 3, 4,
+        >>> to_string({'a': 2,'b': 4})
+        >>> # a=2, b=4
+
+    """
+    s = ''
+    if type(obj) == list or type(obj) == tuple:
+        for i, data in enumerate(obj):
+            s += str(data)
+            if last_comma or i != len(obj)-1:
+                s += ', '
+
+    elif type(obj) == dict:
+        for i, data in enumerate(obj.items()):
+            k, v = data
+            s += '%s=%s' % (str(k), str(v))
+            if last_comma or i != len(obj)-1:
+                s += ', '
+    else:
+        s = str(obj)
+
+    return s
+
+
+def p(obj):
     """Recursively print list, tuple or dict items
 
     Args:
-        v(list, tuple or dict): a list, tuple or dict to print.
+        obj(list, tuple or dict): a list, tuple or dict to print.
 
     """
-    if type(v) == list or type(v) == tuple:
-        for i in v:
+    if type(obj) == list or type(obj) == tuple:
+        for i in obj:
             print(i)
-    elif type(v) == dict:
-        for k in v:
-            print('%s: %s' % (k, v[k]))
+    elif type(obj) == dict:
+        for k in obj:
+            print('%s: %s' % (k, obj[k]))
     else:
-        print(v)
+        print(obj)
 
 
 def color_print(text='', color=0, end='\n'):
@@ -76,11 +111,11 @@ def print_args(args):
         >>> print_args(args)
 
     """
-    for k, v in args._get_kwargs():
-        print('\033[1;32m', k, "\033[0m=\033[1;33m", v, '\033[0m')
+    for k, obj in args._get_kwargs():
+        print('\033[1;32m', k, "\033[0m=\033[1;33m", obj, '\033[0m')
 
 
-def get_logger(f='log.txt', mode='w', level='debug'):
+def get_logger(f='log.txt', mode='w', level='info'):
     """Get a logger.
 
     Args:
@@ -97,7 +132,7 @@ def get_logger(f='log.txt', mode='w', level='debug'):
         >>> logger.info("test")
 
     """
-    logger = logging.getLogger('bdcn')
+    logger = logging.getLogger(__name__)
     if level.lower() == 'debug':
         logger.setLevel(logging.DEBUG)
         formatter = logging.Formatter(

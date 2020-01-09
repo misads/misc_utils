@@ -11,6 +11,7 @@ Welcome to misc_utils's documentation!
    :caption: Contents:
 
    utils
+   decorators
 
 .. toctree::
    :maxdepth: 2

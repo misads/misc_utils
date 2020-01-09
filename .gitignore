@@ -133,3 +133,4 @@ dmypy.json
 */.DS_Store
 attempt.py
 .idea/
+log.txt
