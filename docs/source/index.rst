@@ -7,15 +7,16 @@ Welcome to misc_utils's documentation!
 ==========================================
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
    :caption: Contents:
 
    utils
    decorators
+   changelog
 
 .. toctree::
    :maxdepth: 2
-   :caption: __init__.py:
+   :caption: Overview:
 
    function_index
 
