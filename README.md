@@ -3,12 +3,14 @@
 <p>
 <a href='https://misc-utils.readthedocs.io/en/latest/?badge=latest'>
     <img src='https://readthedocs.org/projects/misc-utils/badge/?version=latest' alt='Documentation Status' /></a>
+    <a href="https://badge.fury.io/py/utils-misc">
+        <img src="https://badge.fury.io/py/utils-misc.svg" alt="Package version"></a>
     <a href="https://opensource.org/licenses/MIT">
         <img src="https://img.shields.io/badge/License-MIT-brightgreen.svg" alt="License">
     </a>
 </p>
 
-Misc system I/O, time, string utils & decorators for Python. 
+Misc system and time utilities for Python projects. 
 
 
 ### Installation
@@ -49,4 +51,4 @@ utils.color_print('Yellow Text', 3)
 
 ### Documentation
 
-The documentation webpage can be found here <https://misc-utils.readthedocs.io/en/latest/utils.html>.
+The documentation webpage can be found here <https://misc-utils.readthedocs.io/en/latest/index.html>.

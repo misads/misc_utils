@@ -14,7 +14,7 @@ with open("README.md", "r") as fh:
 setup(
     name='utils-misc',
     version=__version__,
-    description='Misc_Utils - Misc system & data process utils',
+    description='Misc_Utils - Misc system and time utilities for python projects',
     long_description=long_description,
     long_description_content_type="text/markdown",
     url='https://github.com/misads/misc_utils',
@@ -31,5 +31,5 @@ setup(
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent"
     ],
-    python_requires='>=2.7',
+    python_requires='>=3.5',
 )

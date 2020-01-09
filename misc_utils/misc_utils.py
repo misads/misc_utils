@@ -115,7 +115,7 @@ def print_args(args):
         print('\033[1;32m', k, "\033[0m=\033[1;33m", obj, '\033[0m')
 
 
-def get_logger(f='log.txt', mode='w', level='info'):
+def get_logger(f='log.txt', mode='w', level='info', print_stream=True):
     """Get a logger.
 
     Args:
@@ -123,6 +123,7 @@ def get_logger(f='log.txt', mode='w', level='info'):
         f(str): log file path.
         mode(str): 'w' or 'a'.
         level(str): 'debug' or 'info'.
+        print_stream(bool): if print to terminal or not.
 
     Returns:
         A logger.
@@ -149,7 +150,10 @@ def get_logger(f='log.txt', mode='w', level='info'):
     fh.setFormatter(formatter)
 
     ch = logging.StreamHandler()
-    ch.setLevel(logging.DEBUG)
+    if print_stream:
+        ch.setLevel(logging.DEBUG)
+    else:
+        ch.setLevel(logging.CRITICAL)
     ch.setFormatter(formatter)
 
     logger.addHandler(ch)
