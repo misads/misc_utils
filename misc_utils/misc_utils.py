@@ -5,6 +5,7 @@ Usage:
     >>> import misc_utils as utils
     >>> utils.func_name()  # to call functions in this file
 """
+import datetime
 import glob
 import os
 import pdb
@@ -202,26 +203,76 @@ def get_file_paths_by_pattern(pattern='*', folder='.'):
     return paths
 
 
-def format_num(num: int) -> str:
-    """Add comma in every three digits (return a string).
+def get_time_stamp(add_offset=0):
+    """Get time_zone+0 unix time stamp (seconds)
 
     Args:
-        num(int): a number.
+        add_offset(int): bias added to time stamp
 
-    Examples
-        >>> format_num(10000)  # 10,000
-        >>> format_num(123456789)  # 123,456,789
+    Returns:
+        (str): time stamp seconds
+    """
+    ti = int(time.time())
+    ti = ti + add_offset
+    return str(ti)
+
+
+def get_time_str(time_stamp=get_time_stamp(), fmt="%Y/%m/%d %H:%M:%S", timezone=8, year_length=4):
+    """Get formatted time string.
+    
+    Args:
+        time_stamp(str): linux time string (seconds).
+        fmt(str): string format.
+        timezone(int): time zone.
+        year_length(int): 2 or 4.
+
+    Returns:
+        (str): formatted time string.
+
+    Example:
+        >>> get_time_str()
+        >>> # 2020/01/01 13:30:00
 
     """
-    num = str(num)
-    ans = ''
-    for i in range(len(num)-3, -4, -3):
-        if i < 0:
-            ans = num[0:i+3] + ans
-        else:
-            ans = ',' + num[i:i+3] + ans
+    if not time_stamp:
+        return ''
 
-    return ans.lstrip(',')
+    time_stamp = int(time_stamp)
+
+    base_time = datetime.datetime.utcfromtimestamp(time_stamp)
+
+    time_zone_time = base_time + datetime.timedelta(hours=timezone)
+    format_time_str = time_zone_time.strftime(fmt)
+
+    if year_length == 2:
+        format_time_str = format_time_str[2:]
+    return format_time_str
+
+
+def get_time_stamp_by_format_str(time_str: str, fmt="%Y/%m/%d %H:%M:%S", timezone=8):
+    """Get timestamp by formatted time string.
+
+    Args:
+        time_str(str): string in fmt format.
+        fmt(str): format.
+        timezone(int): time zone.
+
+    Returns:
+        (str): time stamp
+
+    Example:
+        >>> get_time_stamp_by_format_str('2020/01/01 15:30:00')
+        >>> # 1577863800
+
+    """
+    time_0 = datetime.datetime.utcfromtimestamp(0)
+
+    time_str_parse = datetime.datetime.strptime(time_str, fmt)
+    time_str_parse = time_str_parse - datetime.timedelta(hours=timezone)
+
+    days = (time_str_parse - time_0).days
+    seconds = (time_str_parse - time_0).seconds
+    return str(days * 3600 * 24 + seconds)
 
 
 def format_time(seconds):
@@ -250,6 +301,28 @@ def format_time(seconds):
     else:
         eta = '%ds' % eta_s
     return eta
+
+
+def format_num(num: int) -> str:
+    """Add comma in every three digits (return a string).
+
+    Args:
+        num(int): a number.
+
+    Examples
+        >>> format_num(10000)  # 10,000
+        >>> format_num(123456789)  # 123,456,789
+
+    """
+    num = str(num)
+    ans = ''
+    for i in range(len(num)-3, -4, -3):
+        if i < 0:
+            ans = num[0:i+3] + ans
+        else:
+            ans = ',' + num[i:i+3] + ans
+
+    return ans.lstrip(',')
 
 
 try:

@@ -12,6 +12,11 @@ Welcome to misc_utils's documentation!
 
    utils
 
+.. toctree::
+   :maxdepth: 2
+   :caption: __init__.py:
+
+   function_index
 
 
 Indices and tables
@@ -20,5 +25,7 @@ Indices and tables
 * :ref:`genindex`
 * :ref:`modindex`
 * :ref:`search`
+
+   
 
 

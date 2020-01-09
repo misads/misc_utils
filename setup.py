@@ -12,7 +12,7 @@ with open("README.md", "r") as fh:
     long_description = fh.read()
 
 setup(
-    name='misc-utils',
+    name='utils-misc',
     version=__version__,
     description='Misc_Utils - Misc system & data process utils',
     long_description=long_description,

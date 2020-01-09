@@ -16,7 +16,7 @@ Misc system & data process utils for Python.
 **For pip**  
 
 ```bash
-pip install misc-utils
+pip install utils-misc
 ```
 
 **For source**
@@ -50,4 +50,3 @@ utils.color_print('Yellow Text', 3)
 ### Documentation
 
 The documentation webpage can be found here <https://misc-utils.readthedocs.io/en/latest/utils.html>.
-
