@@ -21,7 +21,7 @@ def parse_args():
 @get_timer(logger)
 def test(a, **kwargs):
     for i in range(a):
-        progress_bar(i, a)
+        progress_bar(i, a, msg='hello!')
         time.sleep(.1)
 
 
@@ -31,23 +31,35 @@ if __name__ == '__main__':
 
     tests = [
         get_time_stamp(),
-        get_time_str(),
+        to_string(123),
+        get_time_str(year_length=2),
         get_time_stamp_by_format_str('2020/01/01 15:30:00'),  # 1577863800
         safe_key(d, 'c', 0),
+        safe_key(d, 'a'),
         try_make_dir('cache'),
         get_file_name('test/1.png'),
         get_dir_name('test/1.png'),
         get_file_paths_by_pattern(folder='misc_utils'),
         format_time(543210),
+        format_time(43210),
+        format_time(3210),
+        format_time(10),
         format_num(9876543210),
         is_file_image('1.png'),
+        is_file_image('png'),
+        is_file_image('1.txt'),
     ]
 
-    utils.p(tests)
+    p(tests)
+    p(d)
+    p(123)
 
     opt = parse_args()
     print_args(opt)
 
+    color_print('Yellow', 3)
+
     test(50, b=2, c=3)
+
 
 
