@@ -17,4 +17,4 @@ script:
   - python setup.py install
   - python test/test.py
 after_success:
-  cd test && codecov
+  cd testv
