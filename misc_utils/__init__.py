@@ -44,6 +44,13 @@ from .misc_utils import get_time_stamp_by_format_str
 from .misc_utils import format_time
 from .misc_utils import format_num
 
+
+#######################
+#     convert types
+#######################
+from .misc_utils import toggle_list_dict
+
+
 #######################
 #      misc utils
 #######################

@@ -366,6 +366,51 @@ def format_num(num: int) -> str:
     return ans.lstrip(',')
 
 
+def toggle_list_dict(obj):
+    """Convert list of dict to dict of list, and vice versa.
+
+    Args:
+        obj: a list or a dict.
+
+    Returns:
+        converted type of obj.
+
+    Example:
+        >>> toggle_list_dict([{'a': 3}, {'a': 5}, {'a': 7}])
+        >>> # {'a': [3, 5, 7]}
+        >>> toggle_list_dict({'a': [3, 5, 7]})
+        >>> # [{'a': 3}, {'a': 5}, {'a': 7}]
+        >>> k, v = toggle_list_dict({1: 2, 3: 4})
+        >>> # k=[1, 3], v=[2, 4]
+
+    """
+    if len(obj) == 0:
+        return obj
+
+    if type(obj) == list:
+        ans = {}
+        if type(obj[0]) == dict:
+            l = len(obj)
+            keys = obj[0].keys()
+            return {k: [obj[i][k] for i in range(l)] for k in keys}
+        else:
+            for i, data in enumerate(obj):
+                ans[i] = data
+            return ans
+
+    elif type(obj) == dict:
+        first_key = list(obj.keys())[0]
+        first_value = obj[first_key]
+        if type(first_value) == list:
+            l = len(first_value)
+            return [{i: obj[i][j] for i in obj.keys()} for j in range(l)]
+        else:
+            return list(zip(*(obj.items())))
+
+    else:
+        return obj
+
+
 try:
     _, term_width = os.popen('stty size', 'r').read().split()
     term_width = int(term_width)

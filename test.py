@@ -48,6 +48,10 @@ if __name__ == '__main__':
         is_file_image('1.png'),
         is_file_image('png'),
         is_file_image('1.txt'),
+        toggle_list_dict([1, 3, 5, 7, 9]),
+        toggle_list_dict({1: 2, 3: 4}),
+        toggle_list_dict({'a': [3, 5, 7], 'b':[1, 3, 4]}),
+        toggle_list_dict([{'a': 3, 'b': 1}, {'a': 5, 'b': 2}, {'a': 7, 'b': 3}]),
     ]
 
     p(tests)

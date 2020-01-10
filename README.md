@@ -1,7 +1,7 @@
 # misc_utils
 
 <p>
-    <a href="https://travis-ci.org/misc_utils/misc_utils"><img src='https://travis-ci.com/misads/misc_utils.svg?branch=master' alt='Travis Build Status'></a>
+    <a href="https://travis-ci.com/misads/misc_utils"><img src='https://travis-ci.com/misads/misc_utils.svg?branch=master' alt='Travis Build Status'></a>
     <a href="https://codecov.io/gh/misads/misc_utils">
     <img src="https://codecov.io/gh/misads/misc_utils/branch/master/graph/badge.svg" /></a>
     <a href='https://misc-utils.readthedocs.io/en/latest/?badge=latest'>

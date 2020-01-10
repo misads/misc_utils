@@ -1,6 +1,10 @@
 Changelog
 ============
 
+v0.0.4
+-----------
+
+Added toggle_list_dict()
 
 v0.0.3
 -----------
@@ -8,6 +12,8 @@ v0.0.3
 Added misc_utils.__version__.  
 
 Added Decorators(get_timer()).
+
+Added travis-ci building test and codecov coverage test.
 
 v0.0.2
 -----------
