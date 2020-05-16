@@ -65,7 +65,7 @@ def deprecated(info=''):
     def decorator(fn):
         def deprecation_info(*args, **kwargs):
             warnings.warn(info, DeprecationWarning)
-            color_print(f'DeprecationWarning: {info}', 1)
+            color_print('DeprecationWarning: ' + info, 1)
             result = fn(*args, **kwargs)
             return result
 
