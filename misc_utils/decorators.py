@@ -1,18 +1,17 @@
 """Decoration Utilities."""
-from datetime import datetime
-from typing import Callable, Any
+import time
+from .misc_utils import format_time, to_string, get_time_str, color_print
+import warnings
 
-from .misc_utils import format_time, to_string, get_time_str
 
-
-def get_timer(logger=None) -> Callable:
+def timer(logger=None):
     """Decorate a function to log how log the function took to execute.
 
     Args:
         logger: logger to write to, print if None.
 
     Example:
-        >>> from misc_utils import get_timer
+        >>> from misc_utils import timer
         >>>
         >>> @get_timer(logger)
         >>> def test(a, **kwargs):
@@ -24,18 +23,16 @@ def get_timer(logger=None) -> Callable:
 
     """
 
-    def decorator(fn: Callable) -> Callable:
-        def measure_time(*args: Any, **kwargs: Any) -> Any:
+    def decorator(fn):
+        def measure_time(*args, **kwargs):
 
-            start_time = datetime.now()
+            start = time.time()
             result = fn(*args, **kwargs)
-            end_time = datetime.now()
-
-            seconds = (end_time - start_time).total_seconds()
+            elapsed_time = time.time() - start
 
             args_str = to_string(args, last_comma=True) if len(args) and len(kwargs) else to_string(args)
 
-            info = 'Call %s(%s%s), time: %s.' % (fn.__name__, args_str, to_string(kwargs), format_time(int(seconds)))
+            info = 'Called %s(%s%s), elapsed time: %.5f(s).' % (fn.__name__, args_str, to_string(kwargs), elapsed_time)
             if logger is not None:
                 logger.info(info)
             else:
@@ -45,4 +42,32 @@ def get_timer(logger=None) -> Callable:
 
         return measure_time
 
+    return decorator
+
+
+def deprecated(info=''):
+    """Decorate a deprecated function.
+
+    Args:
+        info: info to show.
+
+    Example:
+        >>> from misc_utils import deprecated
+        >>>
+        >>> @deprecated('old_func() is deprecated now, use new_func() instead.')
+        >>> def old_func():
+        >>>     pass
+        >>>
+        >>> old_func()
+        >>> # DeprecationWarning: old_func() is deprecated now, use new_func() instead.
+
+    """
+    def decorator(fn):
+        def deprecation_info(*args, **kwargs):
+            warnings.warn(info, DeprecationWarning)
+            color_print(f'DeprecationWarning: {info}', 1)
+            result = fn(*args, **kwargs)
+            return result
+
+        return deprecation_info
     return decorator

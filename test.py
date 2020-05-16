@@ -3,7 +3,7 @@ import time
 import argparse
 
 from misc_utils import *
-from misc_utils.decorators import get_timer
+from misc_utils.decorators import timer
 
 logger = utils.get_logger()
 
@@ -18,7 +18,7 @@ def parse_args():
     return opt
 
 
-@get_timer(logger)
+@timer(logger)
 def test(a, **kwargs):
     for i in range(a):
         progress_bar(i, a, msg='hello!')
@@ -52,7 +52,13 @@ if __name__ == '__main__':
         toggle_list_dict({1: 2, 3: 4}),
         toggle_list_dict({'a': [3, 5, 7], 'b':[1, 3, 4]}),
         toggle_list_dict([{'a': 3, 'b': 1}, {'a': 5, 'b': 2}, {'a': 7, 'b': 3}]),
+        mean([1, 2, 3, 4]),
+        gambling(0.5),
+        hash(12),
+        cmd('ls')
     ]
+
+
 
     p(tests)
     p(d)

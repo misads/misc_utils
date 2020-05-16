@@ -1,10 +1,32 @@
 Changelog
 ============
 
+v0.0.6
+-----------
+Added file_lines()
+Modify get_file_paths_by_pattern()
+Added deprecated() decorator
+Added save_pickle()
+Added load_pickle()
+Added save_json()
+Added load_json()
+
+
+v0.0.5
+-----------
+
+Added gambling()
+Added hash()
+Added cmd()
+Changed get_timer to timer
+Added template
+
+
 v0.0.4
 -----------
 
 Added toggle_list_dict()
+Added mean()
 
 v0.0.3
 -----------

@@ -9,12 +9,15 @@ import datetime
 import glob
 import os
 import pdb
+import string
 import random
 import sys
 import time
 
 import numpy as np
 import logging
+import pickle
+import json
 
 
 #############################
@@ -163,6 +166,76 @@ def get_logger(f='log.txt', mode='w', level='info', print_stream=True):
     return logger
 
 
+def cmd(shell):
+    """Run a shell and return results.
+
+    Args:
+
+    """
+    lines = os.popen(shell).readlines()
+    return [line.rstrip('\n') for line in lines]
+
+
+#############################
+#        math utils
+#############################
+
+def hash(length=8):
+    """Return a random hash-like string such as `a6b3c47f`.
+    Args:
+        length(int): length of hash
+
+    Returns:
+        (bool): (randomly) a hash-like string.
+
+    """
+    a = '0123456789abcdef'
+    res = ''
+    for _ in range(length):
+        res += a[random.randint(0, 15)]
+
+    return res
+
+
+def gambling(prob, total=1.0):
+    """Return True in a given probability
+    Args:
+        prob(float): chance to return True.
+        total(float): total, default 1.0.
+
+    Returns:
+        (bool): (randomly) True or False.
+
+    """
+    prob = prob / total
+    if random.random() <= prob:
+        return True
+    else:
+        return False
+
+
+def mean(data: list, prec=3):
+    """Calc mean value of a list.
+
+    Args:
+        data(list): a list.
+        prec(int): round precision.
+
+    Returns:
+        (float) mean value.
+
+    Example:
+        >>> mean([1, 2, 3, 4])
+        >>> # 2.5
+
+    """
+    return round(sum(data) / len(data), prec)
+
+
+#############################
+#        safe loads
+#############################
+
 def safe_key(dic: dict, key, default=None):
     """Return dict[key] if dict has the key, in case of KeyError.
 
@@ -180,6 +253,10 @@ def safe_key(dic: dict, key, default=None):
     else:
         return default
 
+
+#############################
+#        file system
+#############################
 
 def try_make_dir(folder):
     """Make a directory when ignoring FileExistsError.
@@ -225,7 +302,7 @@ def get_dir_name(path):
     return os.path.dirname(path)
 
 
-def get_file_paths_by_pattern(pattern='*', folder='.'):
+def get_file_paths_by_pattern(pattern='*', folder=None):
     """Get a file path list matched given pattern.
 
     Args:
@@ -240,8 +317,57 @@ def get_file_paths_by_pattern(pattern='*', folder='.'):
         >>> get_file_paths_by_pattern('*rotate*')  # get all files with 'rotate' in name
 
     """
-    paths = glob.glob(os.path.join(folder, pattern))
-    return paths
+    if folder is None:
+        return glob.glob(pattern)
+    else:
+        return glob.glob(os.path.join(folder, pattern))
+
+
+def file_lines(filename, prefix='', offset=0, max_num=0):
+    """Load a text file and parse the content as a list of strings.
+
+    Args:
+        filename (str): Filename.
+        prefix (str): The prefix to be inserted to the begining of each item.
+        offset (int): The offset of lines.
+        max_num (int): The maximum number of lines to be read,
+            zeros and negatives mean no limitation.
+
+    Returns:
+        list[str]: A list of strings.
+    """
+    cnt = 0
+    item_list = []
+    with open(filename, 'r') as f:
+        for _ in range(offset):
+            f.readline()
+        for line in f:
+            if cnt >= max_num > 0:
+                break
+            item_list.append(prefix + line.rstrip('\n'))
+            cnt += 1
+    return item_list
+
+
+def save_pickle(file, data):
+    with open(file, 'wb') as f:
+        pickle.dump(data, f)
+
+
+def load_pickle(file):
+    with open(file, 'rb') as f:
+        data = pickle.load(f, encoding='bytes')
+    return data
+
+
+def save_json(file, data):
+    with open(file, 'w', encoding='utf-8') as f:
+        json.dump(data, f, ensure_ascii=False)
+
+
+def load_json(file):
+    with open(file, 'r') as f:
+        return json.load(f)
 
 
 def get_time_stamp(add_offset=0):
@@ -510,6 +636,9 @@ def is_file_image(filename):
     s = filename.split('.')
 
     if s[-1].lower() not in img_ex:
+        return False
+
+    if filename.startswith('.'):
         return False
 
     return True
