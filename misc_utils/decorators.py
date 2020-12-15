@@ -4,7 +4,7 @@ from .misc_utils import format_time, to_string, get_time_str, color_print
 import warnings
 
 
-def timer(logger=None):
+def timer(show_args=True, logger=None):
     """Decorate a function to log how log the function took to execute.
 
     Args:
@@ -30,7 +30,10 @@ def timer(logger=None):
             result = fn(*args, **kwargs)
             elapsed_time = time.time() - start
 
-            args_str = to_string(args, last_comma=True) if len(args) and len(kwargs) else to_string(args)
+            if show_args:
+                args_str = to_string(args, last_comma=True) if len(args) and len(kwargs) else to_string(args)
+            else:
+                args_str = ''
 
             info = 'Called %s(%s%s), elapsed time: %.5f(s).' % (fn.__name__, args_str, to_string(kwargs), elapsed_time)
             if logger is not None:

@@ -384,7 +384,7 @@ def get_time_stamp(add_offset=0):
     return str(ti)
 
 
-def get_time_str(time_stamp=get_time_stamp(), fmt="%Y/%m/%d %H:%M:%S", timezone=8, year_length=4):
+def get_time_str(time_stamp=None, fmt="%Y/%m/%d %H:%M:%S", timezone=8, year_length=4):
     """Get formatted time string.
     
     Args:
@@ -401,8 +401,8 @@ def get_time_str(time_stamp=get_time_stamp(), fmt="%Y/%m/%d %H:%M:%S", timezone=
         >>> # 2020/01/01 13:30:00
 
     """
-    if not time_stamp:
-        return ''
+    if time_stamp is None:
+        time_stamp = get_time_stamp()
 
     time_stamp = int(time_stamp)
 
@@ -553,7 +553,7 @@ def progress_bar(current, total, pre_msg=None, msg=None):
     """Render a progress_bar in terminal.
 
     Preview
-        Training...  Step: [=======>... 26/100 ...........] ETA: 0s | loss:0.45
+        Training...  Step: [=======>... 26/100 ...........] ETA: 0s | loss: 0.45
 
     Args:
 
