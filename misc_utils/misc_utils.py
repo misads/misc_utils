@@ -492,6 +492,30 @@ def format_num(num: int) -> str:
     return ans.lstrip(',')
 
 
+def split_underline(str, end_num, start_num=0, token='_', keep_ex=True):
+    """split a string by token and return a part of it.
+
+    Args:
+       str(str): string to handle with.
+       end_num(int): end of kept parts.
+       start_num(int): start of kept parts.
+       token(str): split by which token.
+       keep_ex(bool): whether to keep original extension.
+
+    Example:
+        >>> split_underline('abc_123_t134567_cam1.jpg', 2)
+        >>> # abc_123.jpg
+
+    """
+    if keep_ex:
+        ex = os.path.splitext(str)[-1]
+    else:
+        ex = ''
+
+    str = get_file_name(str)
+    return token.join(str.split(token)[start_num: end_num]) + ex
+
+
 def toggle_list_dict(obj):
     """Convert list of dict to dict of list, and vice versa.
 

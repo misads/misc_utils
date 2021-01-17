@@ -9,7 +9,7 @@ from .misc_utils import print_args
 
 from .misc_utils import get_logger
 from .misc_utils import cmd
-
+bash = cmd
 
 ######################
 #        math
@@ -29,6 +29,7 @@ from .misc_utils import safe_key
 #      str stuff
 ######################
 from .misc_utils import to_string
+from .misc_utils import split_underline
 
 
 #######################
