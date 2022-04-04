@@ -366,7 +366,7 @@ def save_json(file, data):
 
 
 def load_json(file):
-    with open(file, 'r') as f:
+    with open(file, 'r', encoding='utf-8') as f:
         return json.load(f)
 
 
@@ -595,6 +595,7 @@ def progress_bar(current, total, pre_msg=None, msg=None):
     if current == 0:
         begin_time = time.time()  # Reset for new bar.
 
+
     cur_len = int(TOTAL_BAR_LENGTH*current/total)
     rest_len = int(TOTAL_BAR_LENGTH - cur_len) - 1
 
@@ -614,6 +615,10 @@ def progress_bar(current, total, pre_msg=None, msg=None):
     step_time = cur_time - last_time
     last_time = cur_time
     tot_time = cur_time - begin_time
+    if current == 0:
+        step_time = 20
+    else:
+        step_time = (tot_time / current)
     eta_time = int((total - current) * step_time)
     eta = format_time(eta_time)
 

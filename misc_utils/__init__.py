@@ -81,3 +81,9 @@ from .misc_utils import is_file_image
 #######################
 from .decorators import timer
 from .decorators import deprecated
+
+
+#######################
+#      classes
+#######################
+from .classes import EasyDict
