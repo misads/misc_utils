@@ -5,6 +5,8 @@ Usage:
     >>> import misc_utils as utils
     >>> utils.func_name()  # to call functions in this file
 """
+from collections.abc import Iterable
+
 import datetime
 import glob
 import os
@@ -75,6 +77,153 @@ def p(obj):
             print('%s: %s' % (k, obj[k]))
     else:
         print(obj)
+
+
+"""
+preview
+"""
+TEXT_MAX_SHOW = 20
+INDENTS_PER_LEVEL = 4
+DICT_MAX_SHOW = 8
+LIST_MAX_SHOW = 5
+SET_MAX_SHOW = 5
+
+def _general_info(obj):
+    info = f'({obj.__class__.__name__})'
+    if hasattr(obj, 'shape'):
+        info += f' shape={tuple(obj.shape)}'
+    # elif hasattr(obj, '__len__'):
+        # info += f' len={len(obj)}'
+
+    return info
+
+def no_need_to_recur(item, list_max_show=5, indents=0):
+    """
+    说明:
+        太复杂的类型不需要继续递归, 例如torch.Tensor([24, 3, 256, 256])
+    """
+    indents += 4
+    if hasattr(item, 'shape'):
+        if len(item.shape) == 2 and item.shape[1] <= 5:
+            for i, line in enumerate(item[:list_max_show]):
+                print(' ' * indents + f'[{i}] {str(line)}')
+            if len(item) > list_max_show:
+                print(' ' * indents + f'more {len(item)-list_max_show} items ...')
+            return True
+
+        if len(item.shape) > 2:
+            return True
+        # return True
+
+    return False
+
+
+def _is_list_type(obj):
+    """
+    说明:
+        判断是否为list类型的obj, 例如np.ndarray, torch.Tensor都是list类型的
+        dict, set 不是list类型的
+    """
+    try:
+        obj = obj[:10]
+    except:
+        return False
+    return True
+
+
+def preview(obj, 
+            depth=2, 
+            dict_max_show=DICT_MAX_SHOW, 
+            text_max_show=TEXT_MAX_SHOW, 
+            list_max_show=LIST_MAX_SHOW,
+            key=None,
+            indents=0):
+    """预览结构复杂的变量 Preview large object
+    Args:
+        obj: Any type of object, dict, list, set, np.ndarray, torch.Tensor, or anything
+        depth: int, 递归深度
+        dict_max_show: int, 字典类型最多显示的项目数
+        text_max_show: int, 文本类型最多显示的字数
+        list_max_show: int, 列表类型最多显示的项目数
+        key: str, 指定预览的key, 可用用key1.key2.key3的格式
+        indents: 递归使用的参数, 调用时无需指定
+        
+    """
+    def print_with_indents(text, end='\n'):
+        print(' ' * indents, end='')
+        print(text, end=end)
+
+    def print_in_one_line(text):
+        if text.__class__.__name__ in ['str', 'int', 'float']:
+            if len(str(text)) < text_max_show:
+                print(f'{text}')
+                return True
+            else:
+                print(f'{str(text)[:text_max_show]}...(more {len(str(text))-text_max_show} chars)')
+                return True
+        else:
+            if len(str(text)) < text_max_show:
+                print(f'{text}')
+                return True
+            return False
+
+    def next_iter(item):
+        if not print_in_one_line(item):
+            print(_general_info(item))
+            if not no_need_to_recur(item, list_max_show, indents):
+                preview(item, depth=depth-1, indents=indents)
+
+    if key is not None:
+        obj = get_dict_value(obj, key)        
+    obj_type = obj.__class__.__name__
+
+
+    if indents == 0:
+        print(f'type: {obj_type}')
+
+    indents += INDENTS_PER_LEVEL
+
+    if depth == 0:
+        return
+
+    if isinstance(obj, str) or isinstance(obj, int) or isinstance(obj, float):
+        print_with_indents('', end='')
+        print_in_one_line(obj)
+
+    elif isinstance(obj, list) or isinstance(obj, tuple) or _is_list_type(obj):
+        for i, item in enumerate(obj[:list_max_show]):
+            print_with_indents(f'[{i}] ', end='')
+            next_iter(item)
+
+        if len(obj) > list_max_show:
+            print_with_indents(f'more {len(obj)-list_max_show} items ...')
+
+    elif isinstance(obj, dict):
+        for key in list(obj.keys())[:dict_max_show]:
+            item = obj[key]
+            print_with_indents(f"['{key}'] ", end='')
+            next_iter(item)
+
+        if len(obj) > dict_max_show:
+            print_with_indents(f'more {len(obj)-dict_max_show} items ...')
+
+    elif isinstance(obj, set) or isinstance(obj, Iterable):
+        i = 0
+        for item in obj:
+            print_with_indents(f'[item] ', end='')
+            next_iter(item)
+
+            i += 1
+            if i >= SET_MAX_SHOW:
+                break
+
+        if len(obj) > SET_MAX_SHOW:
+            print_with_indents(f'more {len(obj)-SET_MAX_SHOW} items ...')
+    
+    else:
+        print_with_indents(f'({obj.__class__.__name__}) ', end='')
+        if not print_in_one_line(obj):
+            print('<unknown>')
 
 
 def color_print(text='', color=0, end='\n'):
@@ -149,6 +298,10 @@ def get_logger(f='log.txt', mode='w', level='info', print_stream=True):
         formatter = logging.Formatter(
             "[%(levelname)s] %(asctime)s %(message)s",
             datefmt='%Y-%m-%d %H:%M:%S')
+
+    for handler in logger.root.handlers:
+        if type(handler) is logging.StreamHandler:
+            handler.setLevel(logging.ERROR)
 
     fh = logging.FileHandler(f, mode=mode)
     fh.setLevel(logging.DEBUG)
@@ -285,6 +438,14 @@ def get_file_name(path):
     return name
 
 
+def get_file_ext(path):
+    """
+    Example
+        >>> get_file_ext('train/0001.jpg')  # .jpg
+    """
+    return os.path.splitext(path)[-1].lower()
+
+
 def get_dir_name(path):
     """Get parent directory name.
 
@@ -321,6 +482,27 @@ def get_file_paths_by_pattern(pattern='*', folder=None):
         return glob.glob(pattern)
     else:
         return glob.glob(os.path.join(folder, pattern))
+
+
+def save_file_lines(filename, lines):
+    """Load a text file and parse the content as a list of strings.
+
+    Args:
+        filename (str): Filename.
+        prefix (str): The prefix to be inserted to the begining of each item.
+        offset (int): The offset of lines.
+        max_num (int): The maximum number of lines to be read,
+            zeros and negatives mean no limitation.
+
+    Returns:
+        list[str]: A list of strings.
+    """
+    for i in range(len(lines)):
+        if not lines[i].endswith('\n'):
+            lines[i] += '\n'
+
+    with open(filename, 'w') as f:
+        f.writelines(lines)
 
 
 def file_lines(filename, prefix='', offset=0, max_num=0):
@@ -516,6 +698,33 @@ def split_underline(str, end_num, start_num=0, token='_', keep_ex=True):
     return token.join(str.split(token)[start_num: end_num]) + ex
 
 
+def get_dict_value(data, key):
+    """
+    说明:
+        通过字符串'key1.key2.key3'访问data[key1][key2][key3]。
+
+    Args:
+        data: dict or list
+        key: str 'key1.key2.key3' format
+    
+    Returns:
+        data[key1][key2][key3]
+    """
+    key = str(key)
+
+    split_key = key.split('.')
+    for next_key in split_key:
+        if next_key in data:
+            data = data[next_key]
+        else:
+            try:
+                data = data[int(next_key)]
+            except:
+                raise KeyError(f'key not found: "{key}"')
+                
+    return data
+
+
 def toggle_list_dict(obj):
     """Convert list of dict to dict of list, and vice versa.
 
@@ -649,7 +858,7 @@ def progress_bar(current, total, pre_msg=None, msg=None):
     sys.stdout.flush()
 
 
-def is_file_image(filename):
+def is_image_file(filename):
     """Return if a file's extension is an image's.
 
     Args:
@@ -659,15 +868,16 @@ def is_file_image(filename):
         (bool): if the file is image or not.
 
     """
+    file_ext = get_file_ext(filename)
     img_ex = ['jpg', 'png', 'bmp', 'jpeg', 'tiff']
-    if '.' not in filename:
-        return False
-    s = filename.split('.')
-
-    if s[-1].lower() not in img_ex:
+    
+    if file_ext not in img_ex:
         return False
 
+    # .开头的是缓存文件
     if filename.startswith('.'):
         return False
 
     return True
+
+is_file_image = is_image_file  # alias

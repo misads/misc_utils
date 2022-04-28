@@ -3,7 +3,7 @@ from .version import __version__
 ######################
 #         io
 ######################
-from .misc_utils import p
+from .misc_utils import p, preview
 from .misc_utils import color_print
 from .misc_utils import print_args
 
@@ -36,15 +36,13 @@ from .misc_utils import split_underline
 #     file system
 #######################
 from .misc_utils import try_make_dir
-from .misc_utils import get_file_name
+from .misc_utils import get_file_name, get_file_ext
 from .misc_utils import get_dir_name
 from .misc_utils import get_file_paths_by_pattern
 
-from .misc_utils import file_lines
-from .misc_utils import save_pickle
-from .misc_utils import load_pickle
-from .misc_utils import save_json
-from .misc_utils import load_json
+from .misc_utils import save_file_lines, file_lines
+from .misc_utils import save_pickle, load_pickle
+from .misc_utils import save_json, load_json
 
 
 #######################
@@ -63,9 +61,10 @@ from .misc_utils import format_num
 
 
 #######################
-#     convert types
+#     dict&list helpers
 #######################
 from .misc_utils import toggle_list_dict
+from .misc_utils import get_dict_value
 
 
 #######################
@@ -73,7 +72,7 @@ from .misc_utils import toggle_list_dict
 #######################
 from .misc_utils import progress_bar
 
-from .misc_utils import is_file_image
+from .misc_utils import is_image_file, is_file_image
 
 
 #######################
@@ -86,4 +85,4 @@ from .decorators import deprecated
 #######################
 #      classes
 #######################
-from .classes import EasyDict
+from .classes import EasyDict, TypeHandler, ThreadPool

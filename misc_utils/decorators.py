@@ -1,6 +1,6 @@
 """Decoration Utilities."""
 import time
-from .misc_utils import format_time, to_string, get_time_str, color_print
+from .misc_utils import to_string, get_time_str, color_print, preview
 import warnings
 
 
@@ -32,10 +32,28 @@ def timer(show_args=True, logger=None):
 
             if show_args:
                 args_str = to_string(args, last_comma=True) if len(args) and len(kwargs) else to_string(args)
+                args_str += to_string(kwargs)
+
+                if '\n' in args_str or len(args_str) > 20:
+                    # 参数过长
+                    args_str = 'args too long'
+                    info = 'Called %s(%s), elapsed time: %.5f(s).' % (fn.__name__, args_str , elapsed_time)
+                    if logger is not None:
+                        logger.info(info)
+                    else:
+                        print('[INFO] %s ' % get_time_str() + f'Called {fn.__name__}(')
+                        color_print('args:', 2)
+                        preview(args, 1)
+                        color_print('keyword args:', 2)
+                        preview(kwargs, 1)
+                        print(f') elapsed time: {elapsed_time:.5f}(s).')       
+
+                    return result
+
             else:
                 args_str = ''
 
-            info = 'Called %s(%s%s), elapsed time: %.5f(s).' % (fn.__name__, args_str, to_string(kwargs), elapsed_time)
+            info = 'Called %s(%s), elapsed time: %.5f(s).' % (fn.__name__, args_str , elapsed_time)
             if logger is not None:
                 logger.info(info)
             else:

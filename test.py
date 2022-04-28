@@ -4,6 +4,7 @@ import argparse
 
 from misc_utils import *
 from misc_utils.decorators import timer
+import numpy as np
 
 logger = utils.get_logger()
 
@@ -19,7 +20,7 @@ def parse_args():
 
 
 @timer(logger)
-def test(a, **kwargs):
+def test(a, *args, **kwargs):
     for i in range(a):
         progress_bar(i, a, msg='hello!')
         time.sleep(.1)
@@ -61,6 +62,7 @@ if __name__ == '__main__':
 
 
     p(tests)
+    preview([{'a': 3, 'b': 1}, {'a': 5, 'b': 2}, {'a': 7, 'b': 3}])
     p(d)
     p(123)
 
@@ -69,7 +71,8 @@ if __name__ == '__main__':
 
     color_print('Yellow', 3)
 
-    test(50, b=2, c=3)
-
+    # test(20, b=2, c=3)
+    rand = np.random.random
+    test(20, rand([3, 4, 25, 25]), b=rand([3, 4, 25, 25]), c=rand([3, 179]))
 
 
